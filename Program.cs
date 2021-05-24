@@ -8,6 +8,8 @@ namespace TradingApplication___Console
         {
             Console.WriteLine("Hello World!");
             Console.WriteLine("This is a test.");
+            Console.WriteLine("Does this sync?");
+
         }
     }
 }
