@@ -18,7 +18,7 @@ namespace TradingApplication___Console
             }
             financialDataAPI.Type = Type.COMM;
             var comms = financialDataAPI.GetExchangeSymbolList<Commodity>();
-            foreach(var comm in comms)
+            foreach (var comm in comms)
             {
                 Console.WriteLine(comm.Code);
             }

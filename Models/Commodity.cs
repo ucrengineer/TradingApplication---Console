@@ -12,5 +12,6 @@ namespace TradingApplication___Console.Models
         public string Code { get; set; }
         [JsonProperty("Name")]
         public string Name { get; set; }
+        public List<EOD> EODs { get; set; }
     }
 }
