@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TradingApplication___Console.Models;
 using TradingApplication___Console.GenericMethods;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace TradingApplication___Console
+namespace TradingApplication___Console.DAL
 {
     public enum Type
     {
@@ -23,17 +25,20 @@ namespace TradingApplication___Console
         private string APIToken { get; set; } = "api_token=5f51fc52bc5dd8.26338537&fmt=json";
         public Type Type { get; set; }
         private readonly GenericPropertyAction _propertyAction;
+        
         public FinancialDataAPI(GenericPropertyAction genericPropertyAction)
         {
             _propertyAction = genericPropertyAction;
         }
 
 
+
         //https://eodhistoricaldata.com/api/exchanges-list/?api_token=YOUR_API_TOKEN&fmt=json
         public List<T> GetExchangeSymbolList<T>()
         {
+
+            
             var uri = new Uri(this.BaseAddress, $"exchange-symbol-list/{Type}?{APIToken}");
-            Console.WriteLine(uri);
             try
             {
                 var request = GetAsync(uri);
@@ -74,16 +79,20 @@ namespace TradingApplication___Console
                 if (result.IsSuccessStatusCode)
                 {
                     var data = result.Content.ReadAsStringAsync().Result;
-                    var eods = JsonConvert.DeserializeObject<List<EOD>>(data).OrderBy(x => x.date);
-                    _propertyAction.GenericSetValue<T>(t, "EODs", eods); 
+                    var eods = JsonConvert.DeserializeObject<List<EOD>>(data);
+                    eods.OrderBy(x => x.date);
+                    _propertyAction.GenericSetValue<T>(t, "EODs", eods);
                 }
             }
+
             catch (Exception e)
             {
                 
                 Console.WriteLine(e.Message);
                 _propertyAction.GenericSetValue<T>(t, "EODs", new List<EOD>());
             }
+
+
 
         }
 

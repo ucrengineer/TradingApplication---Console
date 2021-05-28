@@ -18,6 +18,7 @@ namespace TradingApplication___Console.GenericMethods
         {
             var genericType = t.GetType().GetProperty(propName);
             genericType.SetValue(t, Convert.ChangeType(value, genericType.PropertyType), null);
+
         }
 
 

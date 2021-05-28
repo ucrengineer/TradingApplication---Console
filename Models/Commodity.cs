@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TradingApplication___Console.Models
 {
-    class Commodity
+    public class Commodity
     {
         public int id { get; set; }
         [JsonProperty("Code")]
@@ -13,5 +13,7 @@ namespace TradingApplication___Console.Models
         [JsonProperty("Name")]
         public string Name { get; set; }
         public List<EOD> EODs { get; set; }
+        public List<Technical> Technicals { get; set; }
+
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TradingApplication___Console.Models
 {
-    class EOD
+    public class EOD
     {
         public int id { get; set; }
         public DateTime date { get; set; }
