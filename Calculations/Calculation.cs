@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TradingApplication___Console.Calculations.Interface;
 using TradingApplication___Console.Models;
 
 namespace TradingApplication___Console.Calculations
 {
-    public class Calculation
+    public class Calculation:ICalculation
     {
         public float CalculateVolatility(List<EOD> dailyEODs, int period)
         {

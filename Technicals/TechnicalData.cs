@@ -5,15 +5,21 @@ using TradingApplication___Console.Calculations;
 using TradingApplication___Console.Models;
 using System.Linq;
 using TradingApplication___Console.GenericMethods;
+using TradingApplication___Console.GenericMethods.Interface;
+using TradingApplication___Console.Calculations.Interface;
+using TradingApplication___Console.Technicals.Interface;
 
 namespace TradingApplication___Console.Technicals
 {
-    public class TechnicalData : Calculation
+    public class TechnicalData : ITechnicalData
     {
-        private readonly GenericPropertyAction _propertyAction;
-        public TechnicalData(GenericPropertyAction genericPropertyAction)
+        private readonly IGenericPropertyAction _propertyAction;
+        private readonly ICalculation _calculation;
+
+        public TechnicalData(IGenericPropertyAction genericPropertyAction, ICalculation calculation)
         {
             _propertyAction = genericPropertyAction;
+            _calculation = calculation;
         }
 
         public List<Technical> GetTechnicals<T> (T t)
@@ -62,19 +68,19 @@ namespace TradingApplication___Console.Technicals
                 Technical technical = new Technical
                 {
                     DATE = eod.date,
-                    MA_10 = CalculateMovingAverage(EODHolder["MA_10"], 10),
-                    MA_50 = CalculateMovingAverage(EODHolder["MA_50"], 50),
-                    MA_150 = CalculateMovingAverage(EODHolder["MA_150"], 150),
-                    MA_200 = CalculateMovingAverage(EODHolder["MA_200"], 200),
-                    V_QTR_YEAR = CalculateVolatility(EODHolder["V_QTR_YEAR"], 63),
-                    V_HALF_YEAR = CalculateVolatility(EODHolder["V_HALF_YEAR"], 126),
-                    V_YEAR = CalculateVolatility(EODHolder["V_YEAR"], 253),
-                    P_QTR_YEAR = CalculateResults(EODHolder["P_QTR_YEAR"], 63),
-                    P_HALF_YEAR = CalculateResults(EODHolder["P_HALF_YEAR"], 126),
-                    P_YEAR = CalculateResults(EODHolder["P_YEAR"], 253),
-                    RS_QTR_YEAR = CalculateRelativeStrength(EODHolder["RS_QTR_YEAR"], 63),
-                    RS_HALF_YEAR = CalculateRelativeStrength(EODHolder["RS_HALF_YEAR"], 126),
-                    RS_YEAR = CalculateRelativeStrength(EODHolder["RS_YEAR"], 253),
+                    MA_10 = _calculation.CalculateMovingAverage(EODHolder["MA_10"], 10),
+                    MA_50 = _calculation.CalculateMovingAverage(EODHolder["MA_50"], 50),
+                    MA_150 = _calculation.CalculateMovingAverage(EODHolder["MA_150"], 150),
+                    MA_200 = _calculation.CalculateMovingAverage(EODHolder["MA_200"], 200),
+                    V_QTR_YEAR = _calculation.CalculateVolatility(EODHolder["V_QTR_YEAR"], 63),
+                    V_HALF_YEAR = _calculation.CalculateVolatility(EODHolder["V_HALF_YEAR"], 126),
+                    V_YEAR = _calculation.CalculateVolatility(EODHolder["V_YEAR"], 253),
+                    P_QTR_YEAR = _calculation.CalculateResults(EODHolder["P_QTR_YEAR"], 63),
+                    P_HALF_YEAR = _calculation.CalculateResults(EODHolder["P_HALF_YEAR"], 126),
+                    P_YEAR = _calculation.CalculateResults(EODHolder["P_YEAR"], 253),
+                    RS_QTR_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_QTR_YEAR"], 63),
+                    RS_HALF_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_HALF_YEAR"], 126),
+                    RS_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_YEAR"], 253),
 
                 };
 

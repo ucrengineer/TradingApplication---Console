@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TradingApplication___Console.Filters.Interface;
 using TradingApplication___Console.Models;
 
 namespace TradingApplication___Console.Filters
 {
-    public class StockFilter
+    public class StockFilter:IStockFilter
     {
 
         public Boolean FilterByEODs(Stock Stock, int MinPrice, int MinVolume)

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TradingApplication___Console.GenericMethods.Interface;
 
 namespace TradingApplication___Console.GenericMethods
 {
-    public class GenericPropertyAction
+    public class GenericPropertyAction:IGenericPropertyAction
     {
 
         // {get,set} for generic objects

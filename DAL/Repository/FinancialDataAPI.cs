@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TradingApplication___Console.Models;
 using TradingApplication___Console.GenericMethods;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using TradingApplication___Console.DAL.Interface;
+using TradingApplication___Console.GenericMethods.Interface;
 
 namespace TradingApplication___Console.DAL
 {
@@ -19,16 +20,20 @@ namespace TradingApplication___Console.DAL
         COMM
     }
  
-    public class FinancialDataAPI : HttpClient
+    public class FinancialDataAPI : IFinancialDataAPI
     {
-        private new Uri BaseAddress { get; set; } = new Uri("https://eodhistoricaldata.com/api/");
+        private Uri BaseAddress { get; set; } = new Uri("https://eodhistoricaldata.com/api/");
         private string APIToken { get; set; } = "api_token=5f51fc52bc5dd8.26338537&fmt=json";
         public Type Type { get; set; }
-        private readonly GenericPropertyAction _propertyAction;
+        private readonly IGenericPropertyAction _propertyAction;
+        private readonly HttpClient _httpClient;
+       
         
-        public FinancialDataAPI(GenericPropertyAction genericPropertyAction)
+        public FinancialDataAPI(IGenericPropertyAction genericPropertyAction, HttpClient httpClient)
         {
             _propertyAction = genericPropertyAction;
+            _httpClient = httpClient; 
+
         }
 
 
@@ -41,7 +46,7 @@ namespace TradingApplication___Console.DAL
             var uri = new Uri(this.BaseAddress, $"exchange-symbol-list/{Type}?{APIToken}");
             try
             {
-                var request = GetAsync(uri);
+                var request = _httpClient.GetAsync(uri);
                 request.Wait();
                 var result = request.Result;
                 if (result.IsSuccessStatusCode)
@@ -73,7 +78,7 @@ namespace TradingApplication___Console.DAL
             var uri = new Uri(this.BaseAddress, $"eod/{code}.{Type}?{range}&{APIToken}&period=d");
             try
             {
-                var request = GetAsync(uri);
+                var request = _httpClient.GetAsync(uri);
                 request.Wait();
                 var result = request.Result;
                 if (result.IsSuccessStatusCode)
