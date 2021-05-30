@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,12 @@ namespace TradingApplication___Console.Filters
 {
     public class StockFilter:IStockFilter
     {
+        private readonly ILogger<StockFilter> _log;
 
+        public StockFilter(ILogger<StockFilter> log)
+        {
+            _log = log;
+        }
         public Boolean FilterByEODs(Stock Stock, int MinPrice, int MinVolume)
         {
             try 
@@ -24,7 +30,7 @@ namespace TradingApplication___Console.Filters
 
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _log.LogInformation(e.Message);
                 return false;
             }
 

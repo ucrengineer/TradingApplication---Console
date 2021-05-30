@@ -39,7 +39,7 @@ namespace TradingApplication___Console.MainFunctions
             foreach (var stock in stocks)
             {
                 _financialDataAPI.GetEod<Stock>(stock);
-                if (_stockFilter.FilterByEODs(stock, 3, 20000))
+                if (_stockFilter.FilterByEODs(stock, 1, 20000))
                 {
                     _technicalData.GetTechnicals<Stock>(stock);
                 }

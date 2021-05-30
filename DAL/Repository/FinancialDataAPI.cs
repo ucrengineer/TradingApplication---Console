@@ -11,6 +11,7 @@ using TradingApplication___Console.GenericMethods;
 using Microsoft.Extensions.DependencyInjection;
 using TradingApplication___Console.DAL.Interface;
 using TradingApplication___Console.GenericMethods.Interface;
+using Microsoft.Extensions.Logging;
 
 namespace TradingApplication___Console.DAL
 {
@@ -27,11 +28,14 @@ namespace TradingApplication___Console.DAL
         public Type Type { get; set; }
         private readonly IGenericPropertyAction _propertyAction;
         private readonly HttpClient _httpClient;
+        private readonly ILogger<FinancialDataAPI> _log;
 
-        public FinancialDataAPI(IGenericPropertyAction genericPropertyAction, HttpClient httpClient)
+
+        public FinancialDataAPI(IGenericPropertyAction genericPropertyAction, HttpClient httpClient, ILogger<FinancialDataAPI> log)
         {
             _propertyAction = genericPropertyAction;
             _httpClient = httpClient;
+            _log = log;
         }
 
 
@@ -60,8 +64,8 @@ namespace TradingApplication___Console.DAL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return new List<T>();
+                _log.LogInformation(e.Message);
+                return default(List<T>);
             }
 
         }
@@ -90,9 +94,9 @@ namespace TradingApplication___Console.DAL
 
             catch (Exception e)
             {
-                
-                Console.WriteLine(e.Message);
-                _propertyAction.GenericSetValue<T>(t, "EODs", new List<EOD>());
+
+                _log.LogInformation(e.Message);
+                _propertyAction.GenericSetValue<T>(t, "EODs", default(List<EOD>));
             }
 
 
