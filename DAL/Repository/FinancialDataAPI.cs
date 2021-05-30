@@ -27,13 +27,11 @@ namespace TradingApplication___Console.DAL
         public Type Type { get; set; }
         private readonly IGenericPropertyAction _propertyAction;
         private readonly HttpClient _httpClient;
-       
-        
+
         public FinancialDataAPI(IGenericPropertyAction genericPropertyAction, HttpClient httpClient)
         {
             _propertyAction = genericPropertyAction;
-            _httpClient = httpClient; 
-
+            _httpClient = httpClient;
         }
 
 

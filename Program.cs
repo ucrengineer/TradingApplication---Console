@@ -10,6 +10,7 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using TradingApplication___Console.MainFunctions;
 using TradingApplication___Console.MainFunctions.Interface;
+using Microsoft.Extensions.Logging;
 
 // DI, SERILOG, SETTINGS
 
@@ -20,15 +21,13 @@ namespace TradingApplication___Console
         public static readonly IServiceProvider Container = new ContainerBuilder().Build();
         static void Main(string[] args)
         {
-            // create a iclass + class to process stocks
-            // create a iclass + class to process commodities
+
             var ProcessStocks = Container.GetService<IProcessStocks>();
             var ProcessCommodities = Container.GetService<IProcessCommodities>();
-            //ProcessStocks processStocks = new ProcessStocks();
-            //ProcessCommodities processCommodities = new ProcessCommodities();
-            
-            #region real application
 
+            
+            #region main application
+            
             ProcessStocks.Run();
             ProcessCommodities.Run();
 
