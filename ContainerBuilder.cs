@@ -24,6 +24,7 @@ namespace TradingApplication___Console
 {
     public class ContainerBuilder
     {
+        
   
         public IHost Build()
         {
@@ -54,12 +55,12 @@ namespace TradingApplication___Console
                 services.AddSingleton<IProcessCommodities, ProcessCommodities>();
                 services.AddSingleton<ITechnicalData, TechnicalData>();
                 // Database Connection
-                //services.AddTransient<IDbConnection>(
-                //    db => new OracleConnection(Configuration.GetSection("DataConnections").GetSection("ConnectionString").Value)
-                //    );
+                services.AddTransient<IDbConnection>(
+                    db => new OracleConnection(builder.Build().GetSection("DataConnections").GetSection("ConnectionString").Value)
+                    );
 
                 // training class
-                
+
                 services.AddTransient<IGreetingService, GreetingService>();
             })
             .UseSerilog()
@@ -74,6 +75,9 @@ namespace TradingApplication___Console
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
                 .AddEnvironmentVariables();
         }
+
+        
+          
 
    
 
