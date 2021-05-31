@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TradingApplication___Console.DAL;
 using TradingApplication___Console.DAL.Interface;
@@ -20,21 +22,19 @@ namespace TradingApplication___Console.MainFunctions
         private readonly IFinancialDataAPI _financialDataAPI;
         private readonly ITechnicalData _technicalData;
         private readonly IStockFilter _stockFilter;
+        private readonly ILogger<ProcessStocks> _log;
 
-        public ProcessStocks(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData, IStockFilter stockFilter)
+        public ProcessStocks(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData, IStockFilter stockFilter, ILogger<ProcessStocks> log)
         {
-            financialDataAPI.Type = Type.US;
             _financialDataAPI = financialDataAPI;
             _technicalData = technicalData;
             _stockFilter = stockFilter;
+            _log = log;
         }
         public void Run()
         {
-            //FinancialDataAPI financialDataAPI = new FinancialDataAPI(new GenericPropertyAction(), new System.Net.Http.HttpClient());
 
-            //StockFilter stockFilter = new StockFilter();
-            //TechnicalData technicalData = new TechnicalData(new GenericPropertyAction());
-            //_financialDataAPI.Type = Type.US;
+            _financialDataAPI.Type = Type.US;
             var stocks = _financialDataAPI.GetExchangeSymbolList<Stock>();
             foreach (var stock in stocks)
             {
@@ -42,8 +42,10 @@ namespace TradingApplication___Console.MainFunctions
                 if (_stockFilter.FilterByEODs(stock, 1, 20000))
                 {
                     _technicalData.GetTechnicals<Stock>(stock);
+                    //_log.LogInformation("Stock {stock} Processed.", stock.Code);
                 }
             }
+            _log.LogInformation("{number} stocks processed", stocks.Count());
 
         }
     }

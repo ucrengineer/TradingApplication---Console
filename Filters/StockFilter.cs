@@ -30,7 +30,7 @@ namespace TradingApplication___Console.Filters
 
             catch (Exception e)
             {
-                _log.LogInformation(e.Message);
+                _log.LogInformation("FilterByEODs error: {error}",e.Message);
                 return false;
             }
 

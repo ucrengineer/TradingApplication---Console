@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TradingApplication___Console.DAL.Interface;
 using TradingApplication___Console.GenericMethods.Interface;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace TradingApplication___Console.DAL
 {
@@ -54,7 +55,14 @@ namespace TradingApplication___Console.DAL
                 if (result.IsSuccessStatusCode)
                 {
                     var symbols = result.Content.ReadAsStringAsync().Result;
-                    var objects = JsonConvert.DeserializeObject<List<T>>(symbols);
+                    var objects = JsonConvert.DeserializeObject<List<T>>(symbols,
+                        new JsonSerializerSettings
+                        {
+                            Error = delegate(object sender, ErrorEventArgs args)
+                            {
+                                _log.LogInformation("Derserialize error: {error}", args.ErrorContext.Error.Message);
+                            }
+                        });
                     return objects;
 
                 }
@@ -64,7 +72,7 @@ namespace TradingApplication___Console.DAL
             }
             catch (Exception e)
             {
-                _log.LogInformation(e.Message);
+                _log.LogInformation("GetExchnageSymbolList Error: {error}",e.Message);
                 return default(List<T>);
             }
 
@@ -86,7 +94,14 @@ namespace TradingApplication___Console.DAL
                 if (result.IsSuccessStatusCode)
                 {
                     var data = result.Content.ReadAsStringAsync().Result;
-                    var eods = JsonConvert.DeserializeObject<List<EOD>>(data);
+                    var eods = JsonConvert.DeserializeObject<List<EOD>>(data,
+                         new JsonSerializerSettings
+                         {
+                             Error = delegate (object sender, ErrorEventArgs args)
+                             {
+                                 _log.LogInformation("Derserialize error: {error}", args.ErrorContext.Error.Message);
+                             }
+                         });
                     eods.OrderBy(x => x.date);
                     _propertyAction.GenericSetValue<T>(t, "EODs", eods);
                 }
@@ -95,7 +110,7 @@ namespace TradingApplication___Console.DAL
             catch (Exception e)
             {
 
-                _log.LogInformation(e.Message);
+                _log.LogInformation("GetEod Error: {error}",e.Message);
                 _propertyAction.GenericSetValue<T>(t, "EODs", default(List<EOD>));
             }
 

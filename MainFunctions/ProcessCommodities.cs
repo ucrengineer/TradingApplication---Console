@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TradingApplication___Console.DAL;
@@ -16,24 +17,23 @@ namespace TradingApplication___Console.MainFunctions
     {
         private readonly IFinancialDataAPI _financialDataAPI;
         private readonly ITechnicalData _technicalData;
+        private readonly ILogger<ProcessCommodities> _log;
 
-        public ProcessCommodities(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData)
+        public ProcessCommodities(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData, ILogger<ProcessCommodities> log)
         {
-            financialDataAPI.Type = Type.COMM;
             _financialDataAPI = financialDataAPI;
             _technicalData = technicalData;
+            _log = log;
         }
         public void Run()
         {
-            //FinancialDataAPI financialDataAPI = new FinancialDataAPI(new GenericPropertyAction(), new System.Net.Http.HttpClient());
-            //TechnicalData technicalData = new TechnicalData(new GenericPropertyAction());
-
-            //_financialDataAPI.Type = Type.COMM;
+            _financialDataAPI.Type = Type.COMM;
             var commodities = _financialDataAPI.GetExchangeSymbolList<Commodity>();
             foreach (var commodity in commodities)
             {
                 _financialDataAPI.GetEod<Commodity>(commodity);
                 _technicalData.GetTechnicals<Commodity>(commodity);
+                _log.LogInformation("Commodity {comm} Processed", commodity.Code);
             }
         }
     }

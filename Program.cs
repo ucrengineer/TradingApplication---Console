@@ -9,6 +9,7 @@ namespace TradingApplication___Console
     {
         public static readonly IHost host = new ContainerBuilder().Build();
 
+
         static void Main(string[] args)
         {
             
@@ -18,7 +19,7 @@ namespace TradingApplication___Console
 
 
             ProcessStocks.Run();
-            ProcessCommodities.Run();
+            //ProcessCommodities.Run();
 
             #endregion
 

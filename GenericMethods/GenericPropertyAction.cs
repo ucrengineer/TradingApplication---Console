@@ -26,7 +26,7 @@ namespace TradingApplication___Console.GenericMethods
             }
             catch (Exception e)
             {
-                _log.LogInformation(e.Message);
+                _log.LogInformation("GenericGetValue error: {error}",e.Message);
                 return default(object);
             }
         }
@@ -39,7 +39,7 @@ namespace TradingApplication___Console.GenericMethods
             }
             catch (Exception e)
             {
-                _log.LogInformation(e.Message);
+                _log.LogInformation("GenericSetValue error: {error}",e.Message);
             }
 
         }

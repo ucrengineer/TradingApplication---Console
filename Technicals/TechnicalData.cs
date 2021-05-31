@@ -97,7 +97,7 @@ namespace TradingApplication___Console.Technicals
                 }
                 catch (Exception e)
                 {
-                    _log.LogInformation(e.Message);
+                    _log.LogInformation("Calculation error: {error}",e.Message);
                     TechnicalList.Add(default(Technical));
                 }
 
