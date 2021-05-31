@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Oracle.ManagedDataAccess.Client;
 using Serilog;
 using System;
+using System.Data;
 using System.IO;
 using System.Net.Http;
 using TradingApplication___Console.Calculations;
@@ -22,10 +24,9 @@ namespace TradingApplication___Console
 {
     public class ContainerBuilder
     {
-
+  
         public IHost Build()
         {
-            
 
 
             var builder = new ConfigurationBuilder();
@@ -52,8 +53,14 @@ namespace TradingApplication___Console
                 services.AddSingleton<IProcessStocks, ProcessStocks>();
                 services.AddSingleton<IProcessCommodities, ProcessCommodities>();
                 services.AddSingleton<ITechnicalData, TechnicalData>();
-                            // training class
-                            services.AddTransient<IGreetingService, GreetingService>();
+                // Database Connection
+                //services.AddTransient<IDbConnection>(
+                //    db => new OracleConnection(Configuration.GetSection("DataConnections").GetSection("ConnectionString").Value)
+                //    );
+
+                // training class
+                
+                services.AddTransient<IGreetingService, GreetingService>();
             })
             .UseSerilog()
             .Build();
@@ -68,6 +75,7 @@ namespace TradingApplication___Console
                 .AddEnvironmentVariables();
         }
 
+   
 
 
     }
