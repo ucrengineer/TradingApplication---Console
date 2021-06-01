@@ -73,7 +73,7 @@ namespace TradingApplication___Console.Technicals
                 {
                     Technical technical = new Technical
                     {
-                        DATE = eod.date,
+                        TECH_DATE = eod.date,
                         MA_10 = _calculation.CalculateMovingAverage(EODHolder["MA_10"], 10),
                         MA_50 = _calculation.CalculateMovingAverage(EODHolder["MA_50"], 50),
                         MA_150 = _calculation.CalculateMovingAverage(EODHolder["MA_150"], 150),

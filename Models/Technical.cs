@@ -9,7 +9,7 @@ namespace TradingApplication___Console.Models
         public int ID { get; set; }
         public string TICKER { get; set; }
         public string MARKET { get; set; }
-        public DateTime DATE { get; set; }
+        public DateTime TECH_DATE { get; set; }
         public float RS_YEAR { get; set; }
         public float RS_HALF_YEAR { get; set; }
         public float RS_QTR_YEAR { get; set; }

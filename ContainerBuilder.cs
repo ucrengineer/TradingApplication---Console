@@ -11,6 +11,7 @@ using TradingApplication___Console.Calculations;
 using TradingApplication___Console.Calculations.Interface;
 using TradingApplication___Console.DAL;
 using TradingApplication___Console.DAL.Interface;
+using TradingApplication___Console.DAL.Repository;
 using TradingApplication___Console.Filters;
 using TradingApplication___Console.Filters.Interface;
 using TradingApplication___Console.GenericMethods;
@@ -58,7 +59,8 @@ namespace TradingApplication___Console
                 services.AddTransient<IDbConnection>(
                     db => new OracleConnection(builder.Build().GetSection("DataConnections").GetSection("ConnectionString").Value)
                     );
-
+                // DAL
+                //services.AddTransient<ITechnicalsRespository,TechnicalsRepository>();
                 // training class
 
                 services.AddTransient<IGreetingService, GreetingService>();
