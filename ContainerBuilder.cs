@@ -60,7 +60,7 @@ namespace TradingApplication___Console
                     db => new OracleConnection(builder.Build().GetSection("DataConnections").GetSection("ConnectionString").Value)
                     );
                 // DAL
-                //services.AddTransient<ITechnicalsRespository,TechnicalsRepository>();
+                services.AddTransient<ITechnicalsRespository,TechnicalsRepository>();
                 // training class
 
                 services.AddTransient<IGreetingService, GreetingService>();

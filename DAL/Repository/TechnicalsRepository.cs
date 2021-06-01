@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
+using TradingApplication___Console.DAL.Interface;
 using TradingApplication___Console.Models;
 
 namespace TradingApplication___Console.DAL.Repository
 {
-    public class TechnicalsRepository
+    public class TechnicalsRepository:ITechnicalsRespository
     {
         private readonly OracleConnection _connection;
         private readonly ILogger _logger;
