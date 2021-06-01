@@ -42,10 +42,13 @@ namespace TradingApplication___Console.MainFunctions
                 if (_stockFilter.FilterByEODs(stock, 1, 20000))
                 {
                     _technicalData.GetTechnicals<Stock>(stock);
+                    _technicalData.GetTechnicals<Stock>(stock);
                     //_log.LogInformation("Stock {stock} Processed.", stock.Code);
                 }
             }
-            _log.LogInformation("{number} stocks processed", stocks.Count());
+            _log.LogWarning("{number} stocks processed", stocks.Count());
+            _log.LogWarning("Application Complete");
+
 
         }
     }

@@ -45,5 +45,7 @@ namespace TradingApplication___Console.GenericMethods
         }
 
 
+
+
     }
 }

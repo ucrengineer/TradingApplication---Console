@@ -28,8 +28,9 @@ namespace TradingApplication___Console.DAL.Repository
             string procName = Constants.PackageName + Constants.UpdateTechnicals;
             #region Params
             var dyParam = new OracleDynamicParameters();
-            dyParam.Add("id", OracleDbType.Int32, ParameterDirection.Input, technical.ID);
+            //dyParam.Add("id", OracleDbType.Int32, ParameterDirection.Input, technical.ID);
             dyParam.Add("ticker", OracleDbType.Varchar2, ParameterDirection.Input, technical.TICKER ?? null);
+            dyParam.Add("market", OracleDbType.Varchar2, ParameterDirection.Input, technical.MARKET ?? null);
             dyParam.Add("tech_date", OracleDbType.Date, ParameterDirection.Input, technical.TECH_DATE);
             dyParam.Add("rs_year", OracleDbType.Decimal, ParameterDirection.Input, technical.RS_YEAR);
             dyParam.Add("rs_half_year", OracleDbType.Decimal, ParameterDirection.Input, technical.RS_HALF_YEAR);
@@ -46,16 +47,16 @@ namespace TradingApplication___Console.DAL.Repository
             dyParam.Add("ma_10", OracleDbType.Double, ParameterDirection.Input, technical.MA_10);
             dyParam.Add("error", OracleDbType.Varchar2, ParameterDirection.Output, null, 1000);
 
-
             #endregion
             try
             {
-                using (_connection)
+                using (var _conn = new OracleConnection(_connection.ConnectionString))
                 {
+                    _conn.Open();
                     _logger.LogDebug("using {name}", procName);
 
-                    SqlMapper.Query(_connection, procName, param:dyParam, commandType: CommandType.StoredProcedure);
-                    string error_desc = dyParam.GetOutParam("p_error_desc").ToLower();
+                    SqlMapper.Query(_conn, procName, param: dyParam, commandType: CommandType.StoredProcedure);
+                    string error_desc = dyParam.GetOutParam("error").ToLower();
 
                     if (error_desc != "success")
                     {
@@ -63,7 +64,8 @@ namespace TradingApplication___Console.DAL.Repository
                         _logger.LogError(ex.Message);
                         throw ex;
                     }
-                    _logger.LogInformation(error_desc);
+                    //_logger.LogInformation(error_desc);
+                    _conn.Close();
 
                 }
             }
@@ -78,5 +80,8 @@ namespace TradingApplication___Console.DAL.Repository
         {
             return Task.Run(() => UpdateTechnicals(technical));
         }
+
+
+
     }
 }

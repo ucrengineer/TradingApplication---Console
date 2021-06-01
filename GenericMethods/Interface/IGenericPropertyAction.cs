@@ -10,5 +10,6 @@ namespace TradingApplication___Console.GenericMethods.Interface
 
         void GenericSetValue<T>(T t, string propName, object value);
 
+
     }
 }

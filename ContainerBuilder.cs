@@ -40,7 +40,7 @@ namespace TradingApplication___Console
                 .WriteTo.Console()
                 .CreateLogger();
 
-            Log.Logger.Information("Application Starting");
+            Log.Logger.Warning("Application Starting");
 
             var host = Host.CreateDefaultBuilder()
             // place to put all dependencies

@@ -7,7 +7,7 @@ namespace TradingApplication___Console.Technicals.Interface
 {
     public interface ITechnicalData
     {
-        List<Technical> GetTechnicals<T>(T t);
+        void GetTechnicals<T>(T t);
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TradingApplication___Console.DAL;
 using TradingApplication___Console.DAL.Interface;
@@ -11,6 +12,7 @@ using TradingApplication___Console.Technicals;
 using TradingApplication___Console.Technicals.Interface;
 using Type = TradingApplication___Console.DAL.Type;
 
+
 namespace TradingApplication___Console.MainFunctions
 {
     public class ProcessCommodities:IProcessCommodities
@@ -18,12 +20,14 @@ namespace TradingApplication___Console.MainFunctions
         private readonly IFinancialDataAPI _financialDataAPI;
         private readonly ITechnicalData _technicalData;
         private readonly ILogger<ProcessCommodities> _log;
+        private readonly ITechnicalsRespository _technicalsRespository;
 
-        public ProcessCommodities(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData, ILogger<ProcessCommodities> log)
+        public ProcessCommodities(IFinancialDataAPI financialDataAPI, ITechnicalData technicalData, ILogger<ProcessCommodities> log, ITechnicalsRespository technicalsRespository)
         {
             _financialDataAPI = financialDataAPI;
             _technicalData = technicalData;
             _log = log;
+            _technicalsRespository = technicalsRespository;
         }
         public void Run()
         {
@@ -33,8 +37,14 @@ namespace TradingApplication___Console.MainFunctions
             {
                 _financialDataAPI.GetEod<Commodity>(commodity);
                 _technicalData.GetTechnicals<Commodity>(commodity);
-                _log.LogInformation("Commodity {comm} Processed", commodity.Code);
+                //_log.LogInformation("Commodity {comm} Processed", commodity.Code);
             }
+
+            _log.LogWarning("Application Complete");
+
+
+
+
         }
     }
 }

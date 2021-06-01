@@ -17,12 +17,12 @@ namespace TradingApplication___Console
             
 
             #region main application
-            //var ProcessStocks = host.Services.GetService<IProcessStocks>();
+            var ProcessStocks = host.Services.GetService<IProcessStocks>();
             var ProcessCommodities = host.Services.GetService<IProcessCommodities>();
             
 
-            //ProcessStocks.Run();
-            ProcessCommodities.Run();
+            ProcessStocks.Run();
+            //ProcessCommodities.Run();
 
             #endregion
 

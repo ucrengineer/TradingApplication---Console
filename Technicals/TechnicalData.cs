@@ -9,6 +9,7 @@ using TradingApplication___Console.GenericMethods.Interface;
 using TradingApplication___Console.Calculations.Interface;
 using TradingApplication___Console.Technicals.Interface;
 using Microsoft.Extensions.Logging;
+using TradingApplication___Console.DAL.Interface;
 
 namespace TradingApplication___Console.Technicals
 {
@@ -17,15 +18,17 @@ namespace TradingApplication___Console.Technicals
         private readonly IGenericPropertyAction _propertyAction;
         private readonly ICalculation _calculation;
         private readonly ILogger<TechnicalData> _log;
+        private readonly ITechnicalsRespository _technicalsRespository;
 
-        public TechnicalData(IGenericPropertyAction genericPropertyAction, ICalculation calculation, ILogger<TechnicalData> log)
+        public TechnicalData(IGenericPropertyAction genericPropertyAction, ICalculation calculation, ILogger<TechnicalData> log, ITechnicalsRespository technicalsRespository)
         {
             _propertyAction = genericPropertyAction;
             _calculation = calculation;
             _log = log;
+            _technicalsRespository = technicalsRespository;
         }
 
-        public List<Technical> GetTechnicals<T> (T t)
+        public async void GetTechnicals<T> (T t)
         {
             var EODHolder = new Dictionary<string, List<EOD>>()
             {
@@ -47,6 +50,8 @@ namespace TradingApplication___Console.Technicals
             var TechnicalList = new List<Technical>();
 
             var EODs = (List<EOD>)_propertyAction.GenericGetValue(t, "EODs");
+            var tType = (Models.Type)_propertyAction.GenericGetValue(t, "Type");
+
 
             foreach(var eod in EODs)
             {
@@ -73,6 +78,7 @@ namespace TradingApplication___Console.Technicals
                 {
                     Technical technical = new Technical
                     {
+
                         TECH_DATE = eod.date,
                         MA_10 = _calculation.CalculateMovingAverage(EODHolder["MA_10"], 10),
                         MA_50 = _calculation.CalculateMovingAverage(EODHolder["MA_50"], 50),
@@ -90,8 +96,27 @@ namespace TradingApplication___Console.Technicals
 
                     };
 
+                    switch (tType)
+                    {
+                        case (Models.Type.Commodity):
+                            {
+                                technical.MARKET = _propertyAction.GenericGetValue(t, "Code").ToString();
+                                break;
+                            }
+                        case (Models.Type.Stock):
+                            {
+                                technical.TICKER = _propertyAction.GenericGetValue(t, "Code").ToString();
+                                break;
+                            }
+                    }
+
+
+
+
                     TechnicalList.Add(technical);
-                 #endregion
+                    await _technicalsRespository.UpdateTechnicalsAsync(technical);
+
+                    #endregion
 
 
                 }
@@ -104,8 +129,7 @@ namespace TradingApplication___Console.Technicals
 
             }
 
-           
-            return TechnicalList;
+            _propertyAction.GenericSetValue(t, "Technicals", TechnicalList);
 
 
 
