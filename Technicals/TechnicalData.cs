@@ -120,7 +120,7 @@ namespace TradingApplication___Console.Technicals
 
 
                     TechnicalList.Add(technical);
-                    //await _technicalsRespository.UpdateTechnicalsAsync(technical);
+                    await _technicalsRespository.UpdateTechnicalsAsync(technical);
 
                     #endregion
 
