@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TradingApplication___Console.DAL.Interface
 {
@@ -10,5 +11,11 @@ namespace TradingApplication___Console.DAL.Interface
         List<T> GetExchangeSymbolList<T>();
 
         void GetEod<T>(T t);
+
+        Task<List<T>> GetExchangeSymbolListAsync<T>();
+
+        Task GetEodAsync<T>(T t);
+
+
     }
 }

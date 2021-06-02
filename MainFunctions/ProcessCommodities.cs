@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApplication___Console.DAL;
 using TradingApplication___Console.DAL.Interface;
 using TradingApplication___Console.GenericMethods;
@@ -32,11 +33,11 @@ namespace TradingApplication___Console.MainFunctions
         public void Run()
         {
             _financialDataAPI.Type = Type.COMM;
-            var commodities = _financialDataAPI.GetExchangeSymbolList<Commodity>();
+            var commodities =  _financialDataAPI.GetExchangeSymbolList<Commodity>();
             foreach (var commodity in commodities)
             {
-                _financialDataAPI.GetEod<Commodity>(commodity);
-                _technicalData.GetTechnicals<Commodity>(commodity);
+                 _financialDataAPI.GetEod<Commodity>(commodity);
+                 _technicalData.GetTechnicals<Commodity>(commodity);
                 //_log.LogInformation("Commodity {comm} Processed", commodity.Code);
             }
 
@@ -45,6 +46,13 @@ namespace TradingApplication___Console.MainFunctions
 
 
 
+        }
+
+        public Task RunAsync()
+        {
+                return Task.Run(() => Run());
+
+    
         }
     }
 }

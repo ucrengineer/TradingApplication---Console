@@ -10,6 +10,7 @@ using TradingApplication___Console.Calculations.Interface;
 using TradingApplication___Console.Technicals.Interface;
 using Microsoft.Extensions.Logging;
 using TradingApplication___Console.DAL.Interface;
+using System.Threading.Tasks;
 
 namespace TradingApplication___Console.Technicals
 {
@@ -49,10 +50,13 @@ namespace TradingApplication___Console.Technicals
             };
             var TechnicalList = new List<Technical>();
 
-            var EODs = (List<EOD>)_propertyAction.GenericGetValue(t, "EODs");
-            var tType = (Models.Type)_propertyAction.GenericGetValue(t, "Type");
+            var eods = await _propertyAction.GenericGetValueAsync(t, "EODs");
+            var type = await _propertyAction.GenericGetValueAsync(t, "Type");
 
-
+            //var EODs = (List<EOD>)_propertyAction.GenericGetValue(t, "EODs");
+            //var tType = (Models.Type)_propertyAction.GenericGetValue(t, "Type");
+            var tType = (Models.Type)type;
+            var EODs = (List<EOD>)eods;
             foreach(var eod in EODs)
             {
                 foreach(var holder in EODHolder.Keys)
@@ -80,19 +84,19 @@ namespace TradingApplication___Console.Technicals
                     {
 
                         TECH_DATE = eod.date,
-                        MA_10 = _calculation.CalculateMovingAverage(EODHolder["MA_10"], 10),
-                        MA_50 = _calculation.CalculateMovingAverage(EODHolder["MA_50"], 50),
-                        MA_150 = _calculation.CalculateMovingAverage(EODHolder["MA_150"], 150),
-                        MA_200 = _calculation.CalculateMovingAverage(EODHolder["MA_200"], 200),
-                        V_QTR_YEAR = _calculation.CalculateVolatility(EODHolder["V_QTR_YEAR"], 63),
-                        V_HALF_YEAR = _calculation.CalculateVolatility(EODHolder["V_HALF_YEAR"], 126),
-                        V_YEAR = _calculation.CalculateVolatility(EODHolder["V_YEAR"], 253),
-                        P_QTR_YEAR = _calculation.CalculateResults(EODHolder["P_QTR_YEAR"], 63),
-                        P_HALF_YEAR = _calculation.CalculateResults(EODHolder["P_HALF_YEAR"], 126),
-                        P_YEAR = _calculation.CalculateResults(EODHolder["P_YEAR"], 253),
-                        RS_QTR_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_QTR_YEAR"], 63),
-                        RS_HALF_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_HALF_YEAR"], 126),
-                        RS_YEAR = _calculation.CalculateRelativeStrength(EODHolder["RS_YEAR"], 253),
+                        MA_10 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_10"], 10),
+                        MA_50 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_50"], 50),
+                        MA_150 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_150"], 150),
+                        MA_200 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_200"], 200),
+                        V_QTR_YEAR = await _calculation.CalculateVolatilityAsync(EODHolder["V_QTR_YEAR"], 63),
+                        V_HALF_YEAR = await _calculation.CalculateVolatilityAsync(EODHolder["V_HALF_YEAR"], 126),
+                        V_YEAR = await _calculation.CalculateVolatilityAsync(EODHolder["V_YEAR"], 253),
+                        P_QTR_YEAR = await _calculation.CalculateResultsAsync(EODHolder["P_QTR_YEAR"], 63),
+                        P_HALF_YEAR = await _calculation.CalculateResultsAsync(EODHolder["P_HALF_YEAR"], 126),
+                        P_YEAR = await _calculation.CalculateResultsAsync(EODHolder["P_YEAR"], 253),
+                        RS_QTR_YEAR = await _calculation.CalculateRelativeStrengthAsync(EODHolder["RS_QTR_YEAR"], 63),
+                        RS_HALF_YEAR = await _calculation.CalculateRelativeStrengthAsync(EODHolder["RS_HALF_YEAR"], 126),
+                        RS_YEAR = await _calculation.CalculateRelativeStrengthAsync(EODHolder["RS_YEAR"], 253),
 
                     };
 
@@ -100,12 +104,14 @@ namespace TradingApplication___Console.Technicals
                     {
                         case (Models.Type.Commodity):
                             {
-                                technical.MARKET = _propertyAction.GenericGetValue(t, "Code").ToString();
+                                var market = await _propertyAction.GenericGetValueAsync(t, "Code");
+                                technical.MARKET = market.ToString();
                                 break;
                             }
                         case (Models.Type.Stock):
                             {
-                                technical.TICKER = _propertyAction.GenericGetValue(t, "Code").ToString();
+                                var ticker = await _propertyAction.GenericGetValueAsync(t, "Code");
+                                technical.TICKER = ticker.ToString();
                                 break;
                             }
                     }
@@ -114,7 +120,7 @@ namespace TradingApplication___Console.Technicals
 
 
                     TechnicalList.Add(technical);
-                    await _technicalsRespository.UpdateTechnicalsAsync(technical);
+                    //await _technicalsRespository.UpdateTechnicalsAsync(technical);
 
                     #endregion
 
@@ -129,11 +135,19 @@ namespace TradingApplication___Console.Technicals
 
             }
 
-            _propertyAction.GenericSetValue(t, "Technicals", TechnicalList);
+            await _propertyAction.GenericSetValueAsync(t, "Technicals", TechnicalList);
 
 
 
         }
-    
+
+
+        public Task GetTechnicalsAsync<T>(T t)
+        {
+            return Task.Run(() => GetTechnicals(t));
+        }
+
+
+
     }
 }

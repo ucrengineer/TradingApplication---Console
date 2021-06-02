@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApplication___Console.DAL;
 using TradingApplication___Console.DAL.Interface;
 using TradingApplication___Console.Filters;
@@ -50,6 +51,11 @@ namespace TradingApplication___Console.MainFunctions
             _log.LogWarning("Application Complete");
 
 
+        }
+
+        public Task RunAsync()
+        {
+            return Task.Run(() => Run());
         }
     }
 }

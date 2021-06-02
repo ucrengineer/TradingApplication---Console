@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApplication___Console.GenericMethods.Interface;
 
 namespace TradingApplication___Console.GenericMethods
@@ -44,6 +45,15 @@ namespace TradingApplication___Console.GenericMethods
 
         }
 
+        public Task<object> GenericGetValueAsync<T>(T t, string propName)
+        {
+            return Task.Run(() => GenericGetValue(t, propName));
+        }
+
+        public Task GenericSetValueAsync<T>(T t, string propName, object value)
+        {
+            return Task.Run(() => GenericSetValue(t, propName, value));
+        }
 
 
 

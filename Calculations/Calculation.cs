@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApplication___Console.Calculations.Interface;
 using TradingApplication___Console.Models;
 
@@ -28,6 +29,7 @@ namespace TradingApplication___Console.Calculations
                 return default(float);
             }
         }
+
         public float CalculateRelativeStrength(List<EOD> dailyEODs, int period)
         {
             float average; float rs;
@@ -42,6 +44,7 @@ namespace TradingApplication___Console.Calculations
                 return default(float);
             }
         }
+
         public float CalculateResults(List<EOD> dailyEODs, int period)
         {
             float results;
@@ -55,6 +58,7 @@ namespace TradingApplication___Console.Calculations
                 return default(float);
             }
         }
+
         public float CalculateMovingAverage(List<EOD> dailyEODs, int period)
         {
             float average;
@@ -68,6 +72,7 @@ namespace TradingApplication___Console.Calculations
                 return default(float);
             }
         }
+
         // volume 
         public float CalculateRelativeStrengthVolume(List<EOD> dailyEODs, int period)
         {
@@ -82,6 +87,26 @@ namespace TradingApplication___Console.Calculations
             {
                 return default(float);
             }
+        }
+
+
+        public Task<float> CalculateVolatilityAsync(List<EOD> dailyEODs, int period)
+        {
+            return Task.Run(() => CalculateVolatility(dailyEODs, period));
+        }
+
+        public Task<float> CalculateRelativeStrengthAsync(List<EOD> dailyEODs, int period)
+        {
+            return Task.Run(() => CalculateRelativeStrength(dailyEODs, period));
+        }
+
+        public Task<float> CalculateResultsAsync(List<EOD> dailyEODs, int period)
+        {
+            return Task.Run(() => CalculateResults(dailyEODs, period));
+        }
+        public Task<float> CalculateMovingAverageAsync(List<EOD> dailyEODs, int period)
+        {
+            return Task.Run(() => CalculateMovingAverage(dailyEODs, period));
         }
 
     }

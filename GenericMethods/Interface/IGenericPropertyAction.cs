@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TradingApplication___Console.GenericMethods.Interface
 {
@@ -10,6 +11,9 @@ namespace TradingApplication___Console.GenericMethods.Interface
 
         void GenericSetValue<T>(T t, string propName, object value);
 
+        Task<object> GenericGetValueAsync<T>(T t, string propName);
+
+        Task GenericSetValueAsync<T>(T t, string propName, object value);
 
     }
 }

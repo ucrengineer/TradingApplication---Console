@@ -118,6 +118,18 @@ namespace TradingApplication___Console.DAL
 
         }
 
+        public Task<List<T>> GetExchangeSymbolListAsync<T>()
+        {
+            return Task.Run(() => GetExchangeSymbolList<T>());
+        }
+
+        public Task GetEodAsync<T>(T t)
+        {
+            return Task.Run(() => GetEod(t));
+        }
+
+
+
 
     }
 }

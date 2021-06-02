@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApplication___Console.Filters.Interface;
 using TradingApplication___Console.Models;
 
@@ -44,6 +45,11 @@ namespace TradingApplication___Console.Filters
         public Boolean FilterByRelativeStrength()
         {
             return false;
+        }
+
+        public Task<Boolean> FilterByEODsAsync(Stock Stock, int MinPrice, int MinVolume)
+        {
+            return Task.Run(() => FilterByEODs(Stock, MinPrice, MinVolume));
         }
 
     }
