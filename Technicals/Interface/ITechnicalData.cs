@@ -8,7 +8,7 @@ namespace TradingApplication___Console.Technicals.Interface
 {
     public interface ITechnicalData
     {
-        void GetTechnicals<T>(T t);
+        //void GetTechnicals<T>(T t);
 
         Task GetTechnicalsAsync<T>(T t);
 

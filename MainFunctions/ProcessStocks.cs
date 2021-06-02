@@ -42,7 +42,7 @@ namespace TradingApplication___Console.MainFunctions
                 _financialDataAPI.GetEod<Stock>(stock);
                 if (_stockFilter.FilterByEODs(stock, 1, 20000))
                 {
-                    _technicalData.GetTechnicals<Stock>(stock);
+                    _technicalData.GetTechnicalsAsync<Stock>(stock);
                     //_log.LogInformation("Stock {stock} Processed.", stock.Code);
                 }
             }

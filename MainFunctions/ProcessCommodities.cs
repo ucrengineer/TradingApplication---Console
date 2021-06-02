@@ -37,7 +37,7 @@ namespace TradingApplication___Console.MainFunctions
             foreach (var commodity in commodities)
             {
                  _financialDataAPI.GetEod<Commodity>(commodity);
-                 _technicalData.GetTechnicals<Commodity>(commodity);
+                 _technicalData.GetTechnicalsAsync<Commodity>(commodity);
                 //_log.LogInformation("Commodity {comm} Processed", commodity.Code);
             }
 

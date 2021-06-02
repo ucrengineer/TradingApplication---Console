@@ -29,7 +29,7 @@ namespace TradingApplication___Console.Technicals
             _technicalsRespository = technicalsRespository;
         }
 
-        public async void GetTechnicals<T> (T t)
+        public async Task GetTechnicalsAsync<T> (T t)
         {
             var EODHolder = new Dictionary<string, List<EOD>>()
             {
@@ -120,7 +120,7 @@ namespace TradingApplication___Console.Technicals
 
 
                     TechnicalList.Add(technical);
-                    await _technicalsRespository.UpdateTechnicalsAsync(technical);
+                    //await _technicalsRespository.UpdateTechnicalsAsync(technical);
 
                     #endregion
 
@@ -142,10 +142,10 @@ namespace TradingApplication___Console.Technicals
         }
 
 
-        public Task GetTechnicalsAsync<T>(T t)
-        {
-            return Task.Run(() => GetTechnicals(t));
-        }
+        //public Task GetTechnicalsAsync<T>(T t)
+        //{
+        //    return Task.Run(() => GetTechnicals(t));
+        //}
 
 
 
