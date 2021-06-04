@@ -20,6 +20,8 @@ using TradingApplication___Console.MainFunctions;
 using TradingApplication___Console.MainFunctions.Interface;
 using TradingApplication___Console.Technicals;
 using TradingApplication___Console.Technicals.Interface;
+using TradingApplication___Console.TradingSystems;
+using TradingApplication___Console.TradingSystems.Interface;
 
 namespace TradingApplication___Console
 {
@@ -46,7 +48,7 @@ namespace TradingApplication___Console
             // place to put all dependencies
             .ConfigureServices((context, services) =>
             {
-                            // put services in this container
+                // put services in this container
                 services.AddSingleton<HttpClient, HttpClient>();
                 services.AddSingleton<IFinancialDataAPI, FinancialDataAPI>();
                 services.AddSingleton<ICalculation, Calculation>();
@@ -61,9 +63,8 @@ namespace TradingApplication___Console
                     );
                 // DAL
                 services.AddTransient<ITechnicalsRespository,TechnicalsRepository>();
-                // training class
-
-                services.AddTransient<IGreetingService, GreetingService>();
+                // trading systems
+                services.AddSingleton<ISystems, Systems>();
             })
             .UseSerilog()
             .Build();

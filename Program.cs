@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TradingApplication___Console.MainFunctions.Interface;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+using System;
 
 namespace TradingApplication___Console
 {
@@ -14,18 +14,13 @@ namespace TradingApplication___Console
         {
 
 
-            
-
             #region main application
-            var ProcessStocks = host.Services.GetService<IProcessStocks>();
+            //var ProcessStocks = host.Services.GetService<IProcessStocks>();
             var ProcessCommodities = host.Services.GetService<IProcessCommodities>();
 
-
-            //await ProcessStocks.RunAsync();
-             //await ProcessCommodities.RunAsync();
+            //ProcessStocks.Run();
             ProcessCommodities.Run();
             #endregion
-
         }
 
 

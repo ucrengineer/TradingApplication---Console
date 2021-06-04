@@ -59,17 +59,17 @@ namespace TradingApplication___Console.Calculations
             }
         }
 
-        public float CalculateMovingAverage(List<EOD> dailyEODs, int period)
+        public decimal CalculateMovingAverage(List<EOD> dailyEODs, int period)
         {
             float average;
             if (dailyEODs.Count == period)
             {
                 average = (float)dailyEODs.Sum(x => x.adjusted_close) / period;
-                return (float)Math.Round(average, 2);
+                return (decimal)Math.Round(average, 2);
             }
             else
             {
-                return default(float);
+                return default(decimal);
             }
         }
 
@@ -104,7 +104,7 @@ namespace TradingApplication___Console.Calculations
         {
             return Task.Run(() => CalculateResults(dailyEODs, period));
         }
-        public Task<float> CalculateMovingAverageAsync(List<EOD> dailyEODs, int period)
+        public Task<decimal> CalculateMovingAverageAsync(List<EOD> dailyEODs, int period)
         {
             return Task.Run(() => CalculateMovingAverage(dailyEODs, period));
         }

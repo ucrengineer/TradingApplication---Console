@@ -19,10 +19,10 @@ namespace TradingApplication___Console.Models
         public float V_YEAR { get; set; }
         public float V_HALF_YEAR { get; set; }
         public float V_QTR_YEAR { get; set; }
-        public float MA_200 { get; set; }
-        public float MA_150 { get; set; }
-        public float MA_50 { get; set; }
-        public float MA_10 { get; set; }
+        public decimal MA_200 { get; set; }
+        public decimal MA_150 { get; set; }
+        public decimal MA_50 { get; set; }
+        public decimal MA_10 { get; set; }
 
 
     }

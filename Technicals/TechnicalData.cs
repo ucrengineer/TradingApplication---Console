@@ -16,14 +16,14 @@ namespace TradingApplication___Console.Technicals
 {
     public class TechnicalData : ITechnicalData
     {
-        private readonly IGenericPropertyAction _propertyAction;
+        private readonly IGenericPropertyAction _genericPropertyAction;
         private readonly ICalculation _calculation;
         private readonly ILogger<TechnicalData> _log;
         private readonly ITechnicalsRespository _technicalsRespository;
 
         public TechnicalData(IGenericPropertyAction genericPropertyAction, ICalculation calculation, ILogger<TechnicalData> log, ITechnicalsRespository technicalsRespository)
         {
-            _propertyAction = genericPropertyAction;
+            _genericPropertyAction = genericPropertyAction;
             _calculation = calculation;
             _log = log;
             _technicalsRespository = technicalsRespository;
@@ -50,11 +50,11 @@ namespace TradingApplication___Console.Technicals
             };
             var TechnicalList = new List<Technical>();
 
-            var eods = await _propertyAction.GenericGetValueAsync(t, "EODs");
-            var type = await _propertyAction.GenericGetValueAsync(t, "Type");
+            var eods = await _genericPropertyAction.GenericGetValueAsync(t, "EODs");
+            var type = await _genericPropertyAction.GenericGetValueAsync(t, "Type");
 
-            //var EODs = (List<EOD>)_propertyAction.GenericGetValue(t, "EODs");
-            //var tType = (Models.Type)_propertyAction.GenericGetValue(t, "Type");
+            var ticker = await _genericPropertyAction.GenericGetValueAsync(t, "Code");
+
             var tType = (Models.Type)type;
             var EODs = (List<EOD>)eods;
             foreach(var eod in EODs)
@@ -84,6 +84,7 @@ namespace TradingApplication___Console.Technicals
                     {
 
                         TECH_DATE = eod.date,
+                        TICKER = ticker.ToString(),
                         MA_10 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_10"], 10),
                         MA_50 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_50"], 50),
                         MA_150 = await _calculation.CalculateMovingAverageAsync(EODHolder["MA_150"], 150),
@@ -104,14 +105,8 @@ namespace TradingApplication___Console.Technicals
                     {
                         case (Models.Type.Commodity):
                             {
-                                var market = await _propertyAction.GenericGetValueAsync(t, "Code");
-                                technical.MARKET = market.ToString();
-                                break;
-                            }
-                        case (Models.Type.Stock):
-                            {
-                                var ticker = await _propertyAction.GenericGetValueAsync(t, "Code");
-                                technical.TICKER = ticker.ToString();
+                                var name = await _genericPropertyAction.GenericGetValueAsync(t, "Name");
+                                technical.MARKET = name.ToString();
                                 break;
                             }
                     }
@@ -135,7 +130,7 @@ namespace TradingApplication___Console.Technicals
 
             }
 
-            await _propertyAction.GenericSetValueAsync(t, "Technicals", TechnicalList);
+            await _genericPropertyAction.GenericSetValueAsync(t, "Technicals", TechnicalList);
 
 
 

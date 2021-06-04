@@ -8,6 +8,7 @@ namespace TradingApplication___Console.DAL.Interface
     public interface IFinancialDataAPI
     {
         Type Type { get; set; }
+        Period Period { get; set; }
         List<T> GetExchangeSymbolList<T>();
 
         void GetEod<T>(T t);

@@ -21,12 +21,20 @@ namespace TradingApplication___Console.DAL
         US,
         COMM
     }
+
+    public enum Period
+    {
+        day,
+        week,
+        month
+    }
  
     public class FinancialDataAPI : IFinancialDataAPI
     {
         private Uri BaseAddress { get; set; } = new Uri("https://eodhistoricaldata.com/api/");
         private string APIToken { get; set; } = "api_token=5f51fc52bc5dd8.26338537&fmt=json";
         public Type Type { get; set; }
+        public Period Period { get; set; } = Period.day;
         private readonly IGenericPropertyAction _propertyAction;
         private readonly HttpClient _httpClient;
         private readonly ILogger<FinancialDataAPI> _log;
@@ -85,7 +93,7 @@ namespace TradingApplication___Console.DAL
             var dateTo = DateTime.Now.ToString("yyyy-MM-d");
             string range = $"from={dateFrom}&to={dateTo}";
             var code = _propertyAction.GenericGetValue<T>(t, "Code");
-            var uri = new Uri(this.BaseAddress, $"eod/{code}.{Type}?{range}&{APIToken}&period=d");
+            var uri = new Uri(this.BaseAddress, $"eod/{code}.{Type}?{range}&{APIToken}&period={Period}");
             try
             {
                 var request = _httpClient.GetAsync(uri);

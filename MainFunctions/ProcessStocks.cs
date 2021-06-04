@@ -34,6 +34,7 @@ namespace TradingApplication___Console.MainFunctions
         }
         public void Run()
         {
+            var startTime = DateTime.Now;
 
             _financialDataAPI.Type = Type.US;
             var stocks = _financialDataAPI.GetExchangeSymbolList<Stock>();
@@ -47,8 +48,9 @@ namespace TradingApplication___Console.MainFunctions
                 }
             }
             _log.LogWarning("{number} stocks processed", stocks.Count());
-            _log.LogWarning("Application Complete");
-
+            var endTime = DateTime.Now;
+            var finishTime = endTime - startTime;
+            _log.LogError("Process Time: {time}", finishTime);
 
         }
 

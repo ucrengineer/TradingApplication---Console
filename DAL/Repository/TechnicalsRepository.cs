@@ -29,8 +29,8 @@ namespace TradingApplication___Console.DAL.Repository
             #region Params
             var dyParam = new OracleDynamicParameters();
             //dyParam.Add("id", OracleDbType.Int32, ParameterDirection.Input, technical.ID);
-            dyParam.Add("ticker", OracleDbType.Varchar2, ParameterDirection.Input, technical.TICKER ?? null);
-            dyParam.Add("market", OracleDbType.Varchar2, ParameterDirection.Input, technical.MARKET ?? null);
+            dyParam.Add("ticker", OracleDbType.Varchar2, ParameterDirection.Input, technical.TICKER);
+            dyParam.Add("market", OracleDbType.Clob, ParameterDirection.Input, technical.MARKET ?? null);
             dyParam.Add("tech_date", OracleDbType.Date, ParameterDirection.Input, technical.TECH_DATE);
             dyParam.Add("rs_year", OracleDbType.Decimal, ParameterDirection.Input, technical.RS_YEAR);
             dyParam.Add("rs_half_year", OracleDbType.Decimal, ParameterDirection.Input, technical.RS_HALF_YEAR);
@@ -54,7 +54,7 @@ namespace TradingApplication___Console.DAL.Repository
                 {
                     _conn.Open();
                     _logger.LogDebug("using {name}", procName);
-
+                   
                     SqlMapper.Query(_conn, procName, param: dyParam, commandType: CommandType.StoredProcedure);
                     string error_desc = dyParam.GetOutParam("error").ToLower();
 
