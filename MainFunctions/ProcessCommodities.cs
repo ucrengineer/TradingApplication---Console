@@ -39,43 +39,47 @@ namespace TradingApplication___Console.MainFunctions
 
             _financialDataAPI.Type = Type.COMM;
             var commodities =  _financialDataAPI.GetExchangeSymbolList<Commodity>();
-            var systems = new Dictionary<string,List<TradingSystem>>();
             foreach (var commodity in commodities)
             {
                  _financialDataAPI.GetEod<Commodity>(commodity);
                  _technicalData.GetTechnicalsAsync<Commodity>(commodity);
-                //_log.LogInformation("Commodity {comm} Processed", commodity.Code);
+                //var results = _systems.TheNWeekRuleAsync(commodity).GetAwaiter().GetResult();
 
+                //_log.LogInformation("Commodity {comm} Processed", commodity.Code);
             }
+
             _log.LogWarning("Application Complete");
 
             var endTime = DateTime.Now;
             var finishTime = endTime - startTime;
             _log.LogError("Process Time: {time}", finishTime);
-            _log.LogError("Simulating Systems");
             #region simulations
-            foreach (var commodity in commodities)
+            var Longs = new List<Commodity>(); var shorts = new List<Commodity>();
+            foreach(var commodity in commodities)
             {
-                try
+                //var oldresults = _systems.TheNWeekRuleAsync(commodity).GetAwaiter().GetResult();
+                var results = _systems.TheNWeekRuleAndMovingAverageAsync(commodity).GetAwaiter().GetResult();
+                foreach(var report in results)
                 {
-                    // system testing
-                    var results = _systems.TheNWeekRuleAndMovingAverageAsync(commodity).GetAwaiter().GetResult();
-                    systems.Add(commodity.Code.ToString(), results);
+                    //Console.WriteLine($"{commodity.Name}, {report.Side.ToString()}, {report.TradeDate}, {report.Trade_Price}, {report.Trade_PL}");
                 }
-                catch (Exception ex)
-                {
-                    _log.LogError("{comm} error : {message}", commodity.Code, ex.Message);
-                }
-
+                //Console.WriteLine($"Average Gain: {results.Where( x => x.Trade_PL > 0).Sum(x => x.Trade_PL) / results.Where(x => x.Trade_PL > 0).Count()}, Average Loss: {results.Where( x => x.Trade_PL < 0).Sum(x => x.Trade_PL) / results.Where(x => x.Trade_PL < 0).Count()}");
+                //if (results.Where(x => x.Trade_PL < 0).Count() == 0) { Console.WriteLine("Win/Loss Ratio : No Losses"); }
+                //else { Console.WriteLine($"Win/Loss Ratio: {(decimal)results.Where(x => x.Trade_PL > 0).Count() / results.Where(x => x.Trade_PL < 0).Count()}"); };
+                //Console.WriteLine($"Regular Weekly System Win/Loss Ratio : {(decimal)oldresults.Where(x => x.Trade_PL > 0).Count() / oldresults.Where(x => x.Trade_PL < 0).Count()}");
+                if (results.LastOrDefault().Side == SIDE.Long) { Longs.Add(commodity); };
+                if (results.LastOrDefault().Side == SIDE.Short) { shorts.Add(commodity); };
+     
             }
-            foreach (var system in systems)
+            Console.WriteLine("Longs: ");
+            foreach(var com in Longs){
+                Console.WriteLine($"{com.Code}, {com.Name}");
+            }
+            Console.WriteLine();
+            foreach(var com in shorts)
             {
-                _log.LogError("{name} - Last Trade: {day} -  Overall Results: {results}", system.Key.ToString(), system.Value.LastOrDefault().TradeDate, system.Value.Sum(x => x.Trade_PL));
-
-
-
+                Console.WriteLine($"{com.Code}, {com.Name}");
             }
-
             #endregion
         }
 

@@ -55,7 +55,7 @@ namespace TradingApplication___Console.TradingSystems
                                         Quantity = 1,
                                         TradeDate = weekly_eods[i].date,
                                         Trade_PL = trades.Any() ? (double)((weekly_eods[i].adjusted_close - trades.LastOrDefault().Trade_Price)/ weekly_eods[i].adjusted_close) * 100 : 0,
-                                        Trade_Price = eods.Where(x => x.date > weekly_eods[i].date).FirstOrDefault().adjusted_close
+                                        Trade_Price =  weekly_eods[i].adjusted_close
                                     };
                                     trades.Add(tradingSystem);
 
@@ -97,7 +97,7 @@ namespace TradingApplication___Console.TradingSystems
                                         Quantity = 1,
                                         TradeDate = weekly_eods[i].date,
                                         Trade_PL = trades.Any() ? (double)((weekly_eods[i].adjusted_close - trades.LastOrDefault().Trade_Price) / weekly_eods[i].adjusted_close) * 100 : 0,
-                                        Trade_Price = eods.Where(x => x.date > weekly_eods[i].date).FirstOrDefault().adjusted_close
+                                        Trade_Price =  weekly_eods[i].adjusted_close
                                     };
                                     trades.Add(tradingSystem);
 
@@ -173,8 +173,8 @@ namespace TradingApplication___Console.TradingSystems
                 var currentEOD = eods.Where(x => x.date == weekly_eods[i].date).FirstOrDefault();
                 var currentTech = techs.Where(x => x.TECH_DATE == weekly_eods[i].date).FirstOrDefault();
 
-                if (i > n && currentTech.MA_10 != default(decimal) && weekly_eods[i].adjusted_close > weekly_eods[i - n].adjusted_close 
-                    && currentEOD.adjusted_close > currentTech.MA_10)
+                if (i > n && currentTech.MA_50 != default(decimal) && weekly_eods[i].adjusted_close > weekly_eods[i - n].adjusted_close 
+                    && currentEOD.adjusted_close > currentTech.MA_50 && currentEOD.adjusted_close > currentTech.MA_10)
                 {
                     switch (trades.Any())
                     {
@@ -189,7 +189,7 @@ namespace TradingApplication___Console.TradingSystems
                                         Quantity = 1,
                                         TradeDate = weekly_eods[i].date,
                                         Trade_PL = trades.Any() ? (double)((weekly_eods[i].adjusted_close - trades.LastOrDefault().Trade_Price) / weekly_eods[i].adjusted_close) * 100 : 0,
-                                        Trade_Price = eods.Where(x => x.date > weekly_eods[i].date).FirstOrDefault().adjusted_close
+                                        Trade_Price =  weekly_eods[i].adjusted_close
                                     };
                                     trades.Add(tradingSystem);
 
@@ -216,8 +216,8 @@ namespace TradingApplication___Console.TradingSystems
                     }
 
                 }
-                else if (i > n && currentTech.MA_10 != default(decimal)&& weekly_eods[i].adjusted_close < weekly_eods[i - n].adjusted_close
-                     && currentEOD.adjusted_close < currentTech.MA_10)
+                else if (i > n && currentTech.MA_50 != default(decimal)&& weekly_eods[i].adjusted_close < weekly_eods[i - n].adjusted_close
+                     && currentEOD.adjusted_close < currentTech.MA_50 && currentEOD.adjusted_close < currentTech.MA_10 )
                 {
                     switch (trades.Any())
                     {
@@ -232,7 +232,7 @@ namespace TradingApplication___Console.TradingSystems
                                         Quantity = 1,
                                         TradeDate = weekly_eods[i].date,
                                         Trade_PL = trades.Any() ? (double)((weekly_eods[i].adjusted_close - trades.LastOrDefault().Trade_Price) / weekly_eods[i].adjusted_close) * 100 : 0,
-                                        Trade_Price = eods.Where(x => x.date > weekly_eods[i].date).FirstOrDefault().adjusted_close
+                                        Trade_Price =  weekly_eods[i].adjusted_close
                                     };
                                     trades.Add(tradingSystem);
 
